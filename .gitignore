@@ -2,6 +2,15 @@
 __pycache__/
 *.py[cod]
 
+# .pyc file
+*.pyc
+
+# out
+out/
+
+# ide project setting files
+.idea/
+
 # C extensions
 *.so
 
