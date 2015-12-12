@@ -15,9 +15,9 @@ refer_path = "http://gank.io"
 
 def get_dlinks(source_url):
     """
-    根据网页url抓取视频的下载链接
+    根据网页url图片的下载链接
     :param source_url: 原地址
-    :return 返回视频的真实下载链接
+    :return 返回图片的真实下载链接
     """
     curl = pycurl.Curl()
     curl.setopt(pycurl.USERAGENT, user_agent)
@@ -26,6 +26,7 @@ def get_dlinks(source_url):
     href = ""
     result = []
 
+    # 使用探测法拿到所有的图片资源
     while 1:
         # 获取str类型的数据
         buffers = StringIO()
@@ -61,11 +62,11 @@ def get_dlinks(source_url):
 
     return result
 
-def save_to_file(dlinks, file_name):
+def save_to_file(d_links, file_name):
     """
-    将视频链接存入文件
-    :param dlinks: 视频真实下载链接
-    :fild_name: 文件名
+    将图片链接存入文件
+    :param d_links: 图片真实下载链接
+    :param :file_name: 文件名
     :return
     """
     try:
@@ -74,7 +75,7 @@ def save_to_file(dlinks, file_name):
             os.mkdir(base_dir)
         file_object = open(base_dir + file_name, 'w')
 
-        for item in dlinks:
+        for item in d_links:
             file_object.write(item)
             file_object.write('\n')
         file_object.close()
