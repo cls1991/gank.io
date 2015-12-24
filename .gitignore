@@ -1,8 +1,12 @@
 # .pyc file
 *.pyc
 
-# out
-out/
+# jpg, png, jpeg, gif
+*.jpg
+*.png
+*.jpeg
+*.gif
+*.GIF
 
 # ide project setting files
 .idea/

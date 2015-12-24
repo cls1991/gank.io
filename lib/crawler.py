@@ -25,9 +25,12 @@ def get_dlinks(source_url):
 
     href = ""
     result = []
+    counter = 1
 
+    print 'start'
     # 使用探测法拿到所有的图片资源
     while 1:
+        print 'crawler the %d picture' % counter
         # 获取str类型的数据
         buffers = StringIO()
         target_url = source_url + href
@@ -57,6 +60,7 @@ def get_dlinks(source_url):
         else:
             href = _a['href']
         buffers.close()
+        counter += 1
 
     curl.close()
 
