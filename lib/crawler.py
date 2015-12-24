@@ -48,9 +48,10 @@ def get_dlinks(source_url):
         # 拿到图片链接
         img_div = content.find('div', {'class': 'outlink'})
         _img = img_div.find('img')
-        result.append(_img['src'])
+        if _img['src'].endswith('.jpg') or _img['src'].endswith('.png'):
+            result.append(_img['src'])
 
-        # 获取下载链接
+        # 获取下一页地址
         a_div = content.find('div', {'style': 'text-align:right', 'class': 'six columns'})
         _a = a_div.find('a')
         if not _a:
