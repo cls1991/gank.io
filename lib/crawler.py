@@ -1,6 +1,7 @@
 # coding: utf8
 
 import os
+import datetime
 import pycurl
 from StringIO import StringIO
 from bs4 import BeautifulSoup
@@ -26,6 +27,11 @@ def get_dlinks(source_url):
     href = ""
     result = []
     counter = 1
+    lastest_timer = get_record_timer()
+    # 是否是最新记录
+    dt = datetime.datetime.now().strftime("%Y/%m/%d")
+    if lastest_timer and cmp(lastest_timer, dt) == 0:
+        return result
 
     print 'start'
     # 使用探测法拿到所有的图片资源
@@ -60,12 +66,17 @@ def get_dlinks(source_url):
 
         else:
             href = _a['href']
+            if lastest_timer and cmp(href, lastest_timer) <= 0:
+                break
         buffers.close()
         counter += 1
 
     curl.close()
+    # 更新时间点
+    set_record_timer(dt)
 
     return result
+
 
 def save_to_file(d_links, file_name):
     """
@@ -78,7 +89,7 @@ def save_to_file(d_links, file_name):
         base_dir = 'out/'
         if not os.path.exists(base_dir):
             os.mkdir(base_dir)
-        file_object = open(base_dir + file_name, 'w')
+        file_object = open(base_dir + file_name, 'a')
 
         for item in d_links:
             file_object.write(item)
@@ -86,6 +97,42 @@ def save_to_file(d_links, file_name):
         file_object.close()
     except IOError:
         print 'file not exist!'
+        exit()
+
+
+def get_record_timer():
+    """
+    从本地文件拿到最近一次的记录时间点
+    :return
+    """
+    try:
+        record_file = "timer.txt"
+        if not os.path.exists(record_file):
+            return None
+        file_object = open(record_file, "r")
+        line = file_object.readline()
+        file_object.close()
+        if not line:
+            return None
+
+        return line
+    except IOError:
+        print 'file io error!'
+        exit()
+
+def set_record_timer(record_timer):
+    """
+    记录最近一次记录时间点
+    :param record_timer: 记录时间点
+    :return
+    """
+    try:
+        record_file = "timer.txt"
+        file_object = open(record_file, "w")
+        file_object.write(record_timer)
+        file_object.close()
+    except IOError:
+        print 'file io error!'
         exit()
 
 
