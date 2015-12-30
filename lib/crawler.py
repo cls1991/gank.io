@@ -86,6 +86,8 @@ def save_to_file(d_links, file_name):
     :return
     """
     try:
+        if not d_links:
+            return
         base_dir = 'out/'
         if not os.path.exists(base_dir):
             os.mkdir(base_dir)
