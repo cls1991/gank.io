@@ -14,6 +14,8 @@ ReadMe:
 virtual_python_dev="env_gank_io_2.7.6"
 # 项目的根路径
 project_dir="/home/taozhengkai/mygit/gank.io"
+# 目标文件
+result_file=gank.txt
 pyenv activate $virtual_python_dev
 cd $project_dir
 # step 1: git pull更新
@@ -22,15 +24,21 @@ git pull
 python main.py
 source deactivate
 # step 4: 判断本地是否有更改
-cd ./out
 # 检查本地是否有改动需要提交
 if git diff-index --quiet HEAD --; then
     # no changes
     :
 else
     # changes
-    # step 3: wget执行下载
-    # wget --no-clobber -i $result_file 
+    cd out/
+    if git diff --stat | grep $result_file; then
+        # step 3: wget执行下载
+        wget --no-clobber -i $result_file
+    else
+        # do nothing
+        :
+    fi
+    cd ..
     git add .
     comment="更新"
     # 是否输入参数
@@ -55,4 +63,3 @@ else
     # git push
     git push
 fi
-cd ..
