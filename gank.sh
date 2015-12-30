@@ -42,7 +42,7 @@ else
     git add .
     comment="更新"
     # 是否输入参数
-    if [ ! -n "(" ] ;then
+    if [ ! -n "$1" ] ;then
         :
     else
         # 获取外部参数
