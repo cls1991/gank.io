@@ -24,15 +24,15 @@ def get_dlinks(source_url):
     curl.setopt(pycurl.USERAGENT, user_agent)
     curl.setopt(pycurl.REFERER, refer_path)
 
-    href = ""
     result = []
     counter = 1
     lastest_timer = get_record_timer()
     # 是否是最新记录
-    dt = datetime.datetime.now().strftime("%Y/%m/%d")
+    dt = datetime.datetime.now().strftime("/%Y/%m/%d")
     if lastest_timer and cmp(lastest_timer, dt) == 0:
         return result
 
+    href = dt
     print 'start'
     # 使用探测法拿到所有的图片资源
     while 1:
@@ -57,6 +57,13 @@ def get_dlinks(source_url):
         if _img['src'].endswith('.jpg') or _img['src'].endswith('.png'):
             result.append(_img['src'])
 
+        if counter == 2:
+            # 获取前向地址
+            pre_div = content.find('div', {'class': 'six columns'})
+            pre_href = pre_div.find('a')['href']
+            # 更新时间点
+            set_record_timer(pre_href)
+
         # 获取下一页地址
         a_div = content.find('div', {'style': 'text-align:right', 'class': 'six columns'})
         _a = a_div.find('a')
@@ -72,8 +79,6 @@ def get_dlinks(source_url):
         counter += 1
 
     curl.close()
-    # 更新时间点
-    set_record_timer(dt)
 
     return result
 
