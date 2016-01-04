@@ -32,7 +32,8 @@ def get_dlinks(source_url):
     if lastest_timer and cmp(lastest_timer, dt) == 0:
         return result
 
-    href = dt
+    href = ""
+    ll = ""
     print 'start'
     # 使用探测法拿到所有的图片资源
     while 1:
@@ -57,27 +58,42 @@ def get_dlinks(source_url):
         if _img['src'].endswith('.jpg') or _img['src'].endswith('.png'):
             result.append(_img['src'])
 
-        if counter == 2:
-            # 获取前向地址
-            pre_div = content.find('div', {'class': 'six columns'})
-            pre_href = pre_div.find('a')['href']
-            # 更新时间点
-            set_record_timer(pre_href)
-
         # 获取下一页地址
         a_div = content.find('div', {'style': 'text-align:right', 'class': 'six columns'})
         _a = a_div.find('a')
+        buffers.close()
         if not _a:
             print 'done'
             break
 
-        else:
-            href = _a['href']
-            if lastest_timer and cmp(href, lastest_timer) <= 0:
-                break
-        buffers.close()
+        href = _a['href']
+        if counter == 1:
+            ll = href
+        if lastest_timer and cmp(href, lastest_timer) <= 0:
+            break
+
         counter += 1
 
+    # 记录最新时间点
+    buffers = StringIO()
+    target_url = source_url + ll
+    curl.setopt(pycurl.URL, target_url)
+    curl.setopt(pycurl.WRITEDATA, buffers)
+    curl.perform()
+
+    body = buffers.getvalue()
+    soup = BeautifulSoup(body)
+
+    # 拿到目标div
+    content = soup.find('div', {'class': 'container content'})
+    soup.decompose()
+
+    # 获取前向地址
+    pre_div = content.find('div', {'class': 'six columns'})
+    pre_href = pre_div.find('a')['href']
+    # 更新时间点
+    set_record_timer(pre_href)
+    buffers.close()
     curl.close()
 
     return result
@@ -127,6 +143,7 @@ def get_record_timer():
         print 'file io error!'
         exit()
 
+
 def set_record_timer(record_timer):
     """
     记录最近一次记录时间点
@@ -141,5 +158,3 @@ def set_record_timer(record_timer):
     except IOError:
         print 'file io error!'
         exit()
-
-
