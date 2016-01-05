@@ -26,10 +26,10 @@ def get_dlinks(source_url):
 
     result = []
     counter = 1
-    lastest_timer = get_record_timer()
+    latest_timer = get_record_timer()
     # 是否是最新记录
     dt = datetime.datetime.now().strftime("/%Y/%m/%d")
-    if lastest_timer and cmp(lastest_timer, dt) == 0:
+    if latest_timer and cmp(latest_timer, dt) == 0:
         return result
 
     href = ""
@@ -69,7 +69,7 @@ def get_dlinks(source_url):
         href = _a['href']
         if counter == 1:
             ll = href
-        if lastest_timer and cmp(href, lastest_timer) <= 0:
+        if latest_timer and cmp(href, latest_timer) <= 0:
             break
 
         counter += 1
