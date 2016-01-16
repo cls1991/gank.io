@@ -10,3 +10,10 @@
 
 # ide project setting files
 .idea/
+
+# local shell scripts
+*_local.sh
+
+# mac os ignore files
+.DS_Store/
+lib/.DS_Store/
