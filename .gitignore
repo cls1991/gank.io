@@ -15,5 +15,6 @@
 *_local.sh
 
 # mac os ignore files
-.DS_Store/
-lib/.DS_Store/
+.DS_Store
+lib/.DS_Store
+out/.DS_Store
