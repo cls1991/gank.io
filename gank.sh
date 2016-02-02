@@ -11,7 +11,7 @@ ReadMe:
 !
 
 # 项目的python环境
-virtual_python_dev="env_gank_io_2.7.6"
+virtual_python_dev="env_gank_io_2.7.9"
 # 项目的根路径
 project_dir="/home/taozhengkai/Developer/mygit/github/gank.io"
 # 目标文件
