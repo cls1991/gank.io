@@ -59,7 +59,7 @@ def get_dlinks(source_url):
             result.append(_img['src'])
 
         # 获取下一页地址
-        a_div = content.find('div', {'style': 'text-align:right', 'class': 'six columns'})
+        a_div = content.find('p', {'style': 'text-align: right'})
         _a = a_div.find('a')
         buffers.close()
         if not _a:
