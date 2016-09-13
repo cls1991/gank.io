@@ -40,7 +40,7 @@ else
     fi
     cd ..
     git add .
-    comment="更新"
+    comment="`curl -s http://whatthecommit.com/index.txt`"
     # 是否输入参数
     if [ ! -n "$1" ] ;then
         :
